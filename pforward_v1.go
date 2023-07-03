@@ -6,7 +6,18 @@ import (
 	"io"
 	"log"
 	"net"
+
+	"github.com/fatih/color"
 )
+
+func printBanner() {
+	red := color.New(color.FgRed).SprintFunc()
+	white := color.New(color.FgWhite).SprintFunc()
+	fmt.Println("")
+	fmt.Println(white("[Core |"), red("Threat]"), white(" PFORWARD"))
+	fmt.Println("")
+
+}
 
 func handleConnection(conn net.Conn, targetAddr string) {
 	defer conn.Close()
@@ -34,6 +45,9 @@ func handleConnection(conn net.Conn, targetAddr string) {
 }
 
 func main() {
+
+	printBanner()
+
 	localPort := flag.Int("localPort", 8080, "Lokaler Port zum Lauschen")
 	targetAddr := flag.String("targetAddr", "google.com:443", "Zieladresse (Host:Port)")
 
