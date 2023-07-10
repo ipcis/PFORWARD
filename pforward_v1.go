@@ -45,21 +45,25 @@ func handleConnection(conn net.Conn, targetAddr string) {
 }
 
 func main() {
-
 	printBanner()
 
 	localPort := flag.Int("localPort", 8080, "Lokaler Port zum Lauschen")
-	targetAddr := flag.String("targetAddr", "google.com:443", "Zieladresse (Host:Port)")
+	listenIP := flag.String("listenIP", "0.0.0.0", "IP-Adresse zum Lauschen")
+	targetIP := flag.String("targetIP", "google.com", "Ziel-IP-Adresse")
+	targetPort := flag.Int("targetPort", 443, "Ziel-Port")
 
 	flag.Parse()
 
-	listener, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *localPort))
+	listenAddr := fmt.Sprintf("%s:%d", *listenIP, *localPort)
+	targetAddr := fmt.Sprintf("%s:%d", *targetIP, *targetPort)
+
+	listener, err := net.Listen("tcp", listenAddr)
 	if err != nil {
 		log.Fatalf("Fehler beim Starten des Listeners: %s", err)
 	}
 	defer listener.Close()
 
-	log.Printf("Portweiterleitung gestartet. Hörer aktiv auf localhost:%d. Zieladresse: %s\n", *localPort, *targetAddr)
+	log.Printf("Portweiterleitung gestartet. Hörer aktiv auf %s. Zieladresse: %s\n", listenAddr, targetAddr)
 
 	for {
 		conn, err := listener.Accept()
@@ -68,6 +72,6 @@ func main() {
 			continue
 		}
 
-		go handleConnection(conn, *targetAddr)
+		go handleConnection(conn, targetAddr)
 	}
 }
