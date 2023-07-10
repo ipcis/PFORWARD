@@ -17,7 +17,7 @@ This is a simple Go program that allows you to perform port forwarding, similar 
 4. Run the program with the following command:
 
    ```bash
-   ./pforward_v1 -localPort=<local-port> -targetAddr=<target-address>
+   pforward.exe -listenIP 0.0.0.0 -localPort 8080 -targetIP wslab.de -targetPort 80
    ```
 
    Replace `<local-port>` with the desired local port number and `<target-address>` with the target host and port (e.g., `google.com:443`).
@@ -31,7 +31,7 @@ This is a simple Go program that allows you to perform port forwarding, similar 
 To forward traffic from local port 8080 to `google.com:443`, run the following command:
 
 ```bash
-./pforward_v1 -localPort=8080 -targetAddr=google.com:443
+pforward.exe -listenIP 0.0.0.0 -localPort 8080 -targetIP google.com -targetPort 443
 ```
 
 Now, any connection made to `localhost:8080` will be forwarded to `google.com:443`.
